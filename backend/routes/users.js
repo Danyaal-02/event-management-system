@@ -1,11 +1,11 @@
-// server/routes/users.js
-const express = require('express');
+import express from 'express';
+import { getCurrentUser, updateUser, getUsers } from '../controllers/userController.js';
+import auth from '../middleware/auth.js';
+
 const router = express.Router();
-const { getCurrentUser, updateUser, getUsers } = require('../controllers/userController');
-const auth = require('../middleware/auth');
 
 router.get('/me', auth, getCurrentUser);
 router.put('/me', auth, updateUser);
 router.get('/', auth, getUsers);
 
-module.exports = router;
+export default router;

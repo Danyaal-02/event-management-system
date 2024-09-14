@@ -1,7 +1,7 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
-exports.register = async (req, res) => {
+export const register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
     const user = await User.create({ name, email, password, role });
@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -26,8 +26,6 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.logout = async (req, res) => {
-  // In a stateless JWT setup, we don't need to do anything server-side for logout
-  // The client will remove the token
+export const logout = async (req, res) => {
   res.status(200).json({ message: 'Logged out successfully' });
 };

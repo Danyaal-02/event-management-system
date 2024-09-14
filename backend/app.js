@@ -1,13 +1,12 @@
-// server/app.js
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const connectDB = require('./config/db');
-const authRoutes = require('./routes/auth');
-const eventRoutes = require('./routes/events');
-const userRoutes = require('./routes/users');
-const errorHandler = require('./middleware/errorHandler');
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import connectDB from './config/db.js';
+import authRoutes from './routes/auth.js';
+import eventRoutes from './routes/events.js';
+import userRoutes from './routes/users.js';
+import errorHandler from './middleware/errorHandler.js';
 
 dotenv.config();
 

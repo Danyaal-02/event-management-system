@@ -1,22 +1,7 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const Event = require('../models/Event');
-const { sendEventNotification } = require('../utils/mailer');
+import Event from '../models/Event.js';
+import { sendEventNotification } from '../utils/mailer.js';
 
-module.exports = async (req, res, next) => {
-  try {
-    const token = req.header('Authorization').replace('Bearer ', '');
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id);
-    if (!user) throw new Error();
-    req.user = user;
-    next();
-  } catch (error) {
-    res.status(401).json({ message: 'Please authenticate' });
-  }
-};
-
-exports.createEvent = async (req, res) => {
+export const createEvent = async (req, res) => {
   try {
     const event = await Event.create({ ...req.body, organizer: req.user.id });
     res.status(201).json(event);
@@ -25,7 +10,7 @@ exports.createEvent = async (req, res) => {
   }
 };
 
-exports.getEvents = async (req, res) => {
+export const getEvents = async (req, res) => {
   try {
     const events = await Event.find().populate('organizer', 'name email');
     res.json(events);
@@ -34,7 +19,7 @@ exports.getEvents = async (req, res) => {
   }
 };
 
-exports.getEvent = async (req, res) => {
+export const getEvent = async (req, res) => {
   try {
     const event = await Event.findById(req.params.id).populate('organizer', 'name email');
     if (!event) return res.status(404).json({ message: 'Event not found' });
@@ -44,7 +29,7 @@ exports.getEvent = async (req, res) => {
   }
 };
 
-exports.updateEvent = async (req, res) => {
+export const updateEvent = async (req, res) => {
   try {
     const event = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!event) return res.status(404).json({ message: 'Event not found' });
@@ -54,7 +39,7 @@ exports.updateEvent = async (req, res) => {
   }
 };
 
-exports.deleteEvent = async (req, res) => {
+export const deleteEvent = async (req, res) => {
   try {
     const event = await Event.findByIdAndDelete(req.params.id);
     if (!event) return res.status(404).json({ message: 'Event not found' });
@@ -64,7 +49,7 @@ exports.deleteEvent = async (req, res) => {
   }
 };
 
-exports.rsvpEvent = async (req, res) => {
+export const rsvpEvent = async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
     if (!event) return res.status(404).json({ message: 'Event not found' });
@@ -73,7 +58,6 @@ exports.rsvpEvent = async (req, res) => {
     }
     event.attendees = event.attendees || [];
     event.attendees.push(req.user.id);
-    console.log('email backend', req.user);
     await event.save();
     await sendEventNotification(req.user.email, event);
     res.json({ message: 'RSVP successful' });

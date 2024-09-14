@@ -1,7 +1,5 @@
-// server/middleware/errorHandler.js
 const errorHandler = (err, req, res, next) => {
     console.error(err.stack);
-  
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     res.status(statusCode);
     res.json({
@@ -10,4 +8,5 @@ const errorHandler = (err, req, res, next) => {
     });
   };
   
-  module.exports = errorHandler;
+  export default errorHandler;
+  
