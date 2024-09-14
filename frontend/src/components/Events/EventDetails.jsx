@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getEvent, rsvpEvent, deleteEvent } from '../../services/eventService';
 import { useAuth } from '../../hooks/useAuth';
 import { useNotification } from '../../hooks/useNotification';
 import { formatDate } from '../../utils/dateUtils';
 import UpdateEventModal from './UpdateEventModal';
-import Button from '../common/Button';
+import Button from '/src/components/common/Button';
+import { ThemeContext } from '../../context/ThemeContext';
 
 function EventDetails() {
   const [event, setEvent] = useState(null);
@@ -15,6 +16,7 @@ function EventDetails() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { addNotification } = useNotification();
+  const { darkMode } = useContext(ThemeContext);
 
   useEffect(() => {
     fetchEvent();
@@ -73,37 +75,48 @@ function EventDetails() {
     addNotification('Event updated successfully', 'success');
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (!event) return <div>Event not found</div>;
+  if (loading) return (
+    <div className={`flex justify-center items-center h-64 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  );
+  if (!event) return (
+    <div className={`text-center ${darkMode ? 'text-white' : 'text-gray-800'}`}>Event not found</div>
+  );
 
   const isOrganizer = user && event.organizer && event.organizer._id === user.id;
-  const hasRSVPd = user && event.attendees.includes(user.id);
+  const isAttendee = user && event.attendees.includes(user.id);
+  const canRSVP = user && !isOrganizer && !isAttendee;
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">{event.title}</h1>
-      <p className="text-gray-600 mb-2">Date: {formatDate(event.date)}</p>
-      <p className="text-gray-600 mb-4">Location: {event.location}</p>
-      <p className="mb-4">{event.description}</p>
-      <p className="mb-4">Organizer: {event.organizer ? event.organizer.name : 'Unknown'}</p>
-      <p className="mb-4">Capacity: {event.attendees.length} / {event.capacity}</p>
+    <div className={`max-w-2xl mx-auto p-6 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'} rounded-lg shadow-lg animate-fadeIn transition-all duration-300`}>
+      <h1 className={`text-3xl font-bold mb-4 ${darkMode ? 'text-yellow-300' : 'text-indigo-700'}`}>{event.title}</h1>
+      <div className={`mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+        <p className="mb-2"><span className="font-semibold">Date:</span> {formatDate(event.date)}</p>
+        <p className="mb-2"><span className="font-semibold">Location:</span> {event.location}</p>
+        <p className="mb-2"><span className="font-semibold">Organizer:</span> {event.organizer ? event.organizer.name : 'Unknown'}</p>
+        <p className="mb-2"><span className="font-semibold">Capacity:</span> {event.attendees.length} / {event.capacity}</p>
+      </div>
+      <p className={`mb-6 ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>{event.description}</p>
       
-      {user && !isOrganizer && !hasRSVPd && (
-        <Button onClick={handleRSVP} className="bg-green-500 text-white hover:bg-green-600 mr-2">
-          RSVP
-        </Button>
-      )}
-      
-      {isOrganizer && (
-        <>
-          <Button onClick={() => setIsUpdateModalOpen(true)} className="bg-blue-500 text-white hover:bg-blue-600 mr-2">
-            Edit Event
+      <div className="flex flex-wrap gap-4">
+        {canRSVP && (
+          <Button onClick={handleRSVP} className={`${darkMode ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white transition-colors duration-200`}>
+            RSVP
           </Button>
-          <Button onClick={handleDelete} className="bg-red-500 text-white hover:bg-red-600">
-            Delete Event
-          </Button>
-        </>
-      )}
+        )}
+        
+        {isOrganizer && (
+          <>
+            <Button onClick={() => setIsUpdateModalOpen(true)} className={`${darkMode ? 'bg-purple-600 hover:bg-purple-700' : 'bg-blue-500 hover:bg-blue-600'} text-white transition-colors duration-200`}>
+              Edit Event
+            </Button>
+            <Button onClick={handleDelete} className={`${darkMode ? 'bg-red-600 hover:bg-red-700' : 'bg-red-500 hover:bg-red-600'} text-white transition-colors duration-200`}>
+              Delete Event
+            </Button>
+          </>
+        )}
+      </div>
 
       {isUpdateModalOpen && (
         <UpdateEventModal

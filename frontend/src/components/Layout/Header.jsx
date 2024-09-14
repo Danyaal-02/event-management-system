@@ -13,6 +13,9 @@ function Header() {
     navigate('/login');
   };
 
+  // Check if the user is not an attendee (e.g., organizer or admin)
+  const canCreateEvent = user && user.role !== 'attendee';
+
   return (
     <header className={`${
       darkMode 
@@ -26,7 +29,9 @@ function Header() {
             <li><Link to="/events" className="hover:text-yellow-300 transition-colors duration-200">Events</Link></li>
             {user ? (
               <>
-                <li><Link to="/create-event" className="hover:text-yellow-300 transition-colors duration-200">Create Event</Link></li>
+                {canCreateEvent && (
+                  <li><Link to="/create-event" className="hover:text-yellow-300 transition-colors duration-200">Create Event</Link></li>
+                )}
                 <li><Link to="/profile" className="hover:text-yellow-300 transition-colors duration-200">Profile</Link></li>
                 <li>
                   <button 
