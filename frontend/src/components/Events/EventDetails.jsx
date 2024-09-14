@@ -5,7 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useNotification } from '../../hooks/useNotification';
 import { formatDate } from '../../utils/dateUtils';
 import UpdateEventModal from './UpdateEventModal';
-import Button from '/src/components/common/Button';
+import Button from '../../components/common/Button';
 import { ThemeContext } from '../../context/ThemeContext';
 
 function EventDetails() {
