@@ -4,8 +4,8 @@ import { getEvent, rsvpEvent, deleteEvent } from '../../services/eventService';
 import { useAuth } from '../../hooks/useAuth';
 import { useNotification } from '../../hooks/useNotification';
 import { formatDate } from '../../utils/dateUtils';
-import Button from '../common/Button';
 import UpdateEventModal from './UpdateEventModal';
+import Button from '../common/Button';
 
 function EventDetails() {
   const [event, setEvent] = useState(null);
