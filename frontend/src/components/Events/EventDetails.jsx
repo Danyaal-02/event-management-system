@@ -100,19 +100,19 @@ function EventDetails() {
       
       <div className="flex flex-wrap gap-4">
         {canRSVP && (
-          <Button onClick={handleRSVP} className={`${darkMode ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white transition-colors duration-200`}>
+          <button onClick={handleRSVP} className={`${darkMode ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white transition-colors duration-200`}>
             RSVP
-          </Button>
+          </button>
         )}
         
         {isOrganizer && (
           <>
-            <Button onClick={() => setIsUpdateModalOpen(true)} className={`${darkMode ? 'bg-purple-600 hover:bg-purple-700' : 'bg-blue-500 hover:bg-blue-600'} text-white transition-colors duration-200`}>
+            <button onClick={() => setIsUpdateModalOpen(true)} className={`${darkMode ? 'bg-purple-600 hover:bg-purple-700' : 'bg-blue-500 hover:bg-blue-600'} text-white transition-colors duration-200`}>
               Edit Event
-            </Button>
-            <Button onClick={handleDelete} className={`${darkMode ? 'bg-red-600 hover:bg-red-700' : 'bg-red-500 hover:bg-red-600'} text-white transition-colors duration-200`}>
+            </button>
+            <button onClick={handleDelete} className={`${darkMode ? 'bg-red-600 hover:bg-red-700' : 'bg-red-500 hover:bg-red-600'} text-white transition-colors duration-200`}>
               Delete Event
-            </Button>
+            </button>
           </>
         )}
       </div>

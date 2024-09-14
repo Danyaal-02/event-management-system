@@ -9,15 +9,20 @@ function Notification({ message, type = 'info', onClose }) {
   }[type];
 
   return (
-    <div className={`border-l-4 p-4 ${bgColor} relative`} role="alert">
-      <p className="font-bold">Notification</p>
-      <p>{message}</p>
-      <button 
-        onClick={onClose} 
-        className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 hover:text-gray-700"
+    <div
+      className={`border-l-4 p-4 rounded-lg shadow-lg transform transition-all duration-300 ease-in-out ${bgColor} relative flex items-start animate-slideIn`}
+      role="alert"
+    >
+      <div className="flex-grow">
+        <p className="font-semibold text-lg">Notification</p>
+        <p className="mt-1 text-sm">{message}</p>
+      </div>
+      <button
+        onClick={onClose}
+        className="ml-4 text-lg text-gray-500 hover:text-gray-700 transition-colors duration-200"
         aria-label="Close"
       >
-        ×
+        &times;
       </button>
     </div>
   );
