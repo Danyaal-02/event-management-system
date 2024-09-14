@@ -7,18 +7,6 @@ import { formatDate } from '../../utils/dateUtils';
 import UpdateEventModal from './UpdateEventModal';
 import { ThemeContext } from '../../context/ThemeContext';
 
-function Button({ children, onClick, className, ...props }) {
-    return (
-      <button
-        onClick={onClick}
-        className={`px-4 py-2 rounded ${className}`}
-        {...props}
-      >
-        {children}
-      </button>
-    );
-  }
-
 function EventDetails() {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
