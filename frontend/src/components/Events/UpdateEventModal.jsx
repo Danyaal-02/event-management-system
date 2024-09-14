@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { updateEvent } from '../../services/eventService';
 import { useNotification } from '../../hooks/useNotification';
-import Button from '../common/Button';
 
 const UpdateEventModal = ({ event, isOpen, onClose, onEventUpdated }) => {
   const [title, setTitle] = useState(event.title);
@@ -114,12 +113,12 @@ const UpdateEventModal = ({ event, isOpen, onClose, onEventUpdated }) => {
             />
           </div>
           <div className="flex justify-end">
-            <Button type="button" onClick={onClose} className="bg-gray-500 text-white hover:bg-gray-600 mr-2">
+            <button type="button" onClick={onClose} className="bg-gray-500 text-white hover:bg-gray-600 mr-2">
               Cancel
-            </Button>
-            <Button type="submit" className="bg-blue-500 text-white hover:bg-blue-600">
+            </button>
+            <button type="submit" className="bg-blue-500 text-white hover:bg-blue-600">
               Update Event
-            </Button>
+            </button>
           </div>
         </form>
       </div>
