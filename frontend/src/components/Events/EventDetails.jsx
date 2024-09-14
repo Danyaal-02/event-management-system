@@ -4,13 +4,11 @@ import { getEvent, rsvpEvent, deleteEvent } from '../../services/eventService';
 import { useAuth } from '../../hooks/useAuth';
 import { useNotification } from '../../hooks/useNotification';
 import { formatDate } from '../../utils/dateUtils';
-import UpdateEventModal from './UpdateEventModal';
 import { ThemeContext } from '../../context/ThemeContext';
 
 function EventDetails() {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -69,11 +67,6 @@ function EventDetails() {
     }
   };
 
-  const handleUpdateEvent = (updatedEvent) => {
-    setEvent(updatedEvent);
-    addNotification('Event updated successfully', 'success');
-  };
-
   if (loading) return (
     <div className={`flex justify-center items-center h-64 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
       <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
@@ -84,7 +77,7 @@ function EventDetails() {
   );
 
   const isOrganizer = user && event.organizer && event.organizer._id === user.id;
-  const isAttendee = user && event.attendees.includes(user.id);
+  const isAttendee = user && event.attendees?.includes(user.id);
   const canRSVP = user && !isOrganizer && !isAttendee;
 
   return (
@@ -100,31 +93,19 @@ function EventDetails() {
       
       <div className="flex flex-wrap gap-4">
         {canRSVP && (
-          <button onClick={handleRSVP} className={`${darkMode ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white transition-colors duration-200`}>
+          <button onClick={handleRSVP} className={`${darkMode ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white transition-colors duration-200 p-2 border rounded-md`}>
             RSVP
           </button>
         )}
         
         {isOrganizer && (
           <>
-            <button onClick={() => setIsUpdateModalOpen(true)} className={`${darkMode ? 'bg-purple-600 hover:bg-purple-700' : 'bg-blue-500 hover:bg-blue-600'} text-white transition-colors duration-200`}>
-              Edit Event
-            </button>
-            <button onClick={handleDelete} className={`${darkMode ? 'bg-red-600 hover:bg-red-700' : 'bg-red-500 hover:bg-red-600'} text-white transition-colors duration-200`}>
+            <button onClick={handleDelete} className={`${darkMode ? 'bg-red-600 hover:bg-red-700' : 'bg-red-500 hover:bg-red-600'} text-white transition-colors duration-200 p-2 border rounded-md`}>
               Delete Event
             </button>
           </>
         )}
       </div>
-
-      {isUpdateModalOpen && (
-        <UpdateEventModal
-          event={event}
-          isOpen={isUpdateModalOpen}
-          onClose={() => setIsUpdateModalOpen(false)}
-          onEventUpdated={handleUpdateEvent}
-        />
-      )}
     </div>
   );
 }

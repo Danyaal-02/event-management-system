@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeContext } from '../context/ThemeContext';
-import { AuthContext } from '../context/AuthContext'; // Assuming you have this
+import { AuthContext } from '../context/AuthContext';
 
 function Home() {
   const { darkMode } = useContext(ThemeContext);
@@ -28,7 +28,6 @@ function Home() {
           Browse Events
         </Link>
 
-        {/* Conditionally render "Create Event" button if user is authenticated and is an organizer */}
         {isAuthenticated && user?.role === 'organizer' && (
           <Link to="/create-event" className={`${
             darkMode 
